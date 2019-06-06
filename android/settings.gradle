@@ -1,0 +1,3 @@
+rootProject.name = 'yd_android'
+
+include ':app'
