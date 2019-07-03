@@ -6,10 +6,8 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './redux'
 
-import { Router, Scene } from 'react-native-router-flux';
-
-import Login from './pages/auth/login'
-
+import { Router } from 'react-native-router-flux';
+import scenes from './router'
 
 interface Props{}
 interface State{}
@@ -19,16 +17,7 @@ class App extends Component<Props,State> {
      render() {
           return (
                <Provider store={ store }>
-                    <Router>
-                        <Scene key="root">
-                            <Scene key="login"
-                              component={Login}
-                              hideNavBar
-                              title="login"
-                              initial
-                            />
-                        </Scene>
-                    </Router>
+                    <Router scenes={ scenes } />
                </Provider>
           )
      }
