@@ -1,4 +1,6 @@
 // Created by szatpig at 2019/6/28.
+'user strict'
+
 import React from 'react'
 import { Component } from 'react';
 import { Platform, StyleSheet, Text, View, StatusBar, Image, TextInput, TouchableOpacity,ImageBackground } from 'react-native';

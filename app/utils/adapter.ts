@@ -1,4 +1,6 @@
 // Created by szatpig at 2019/7/1.
+'user strict'
+
 import { Dimensions, Platform } from "react-native";
 
 // app 只有竖屏模式，所以可以只获取一次 width

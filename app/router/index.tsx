@@ -1,4 +1,6 @@
 // Created by szatpig at 2019/7/2.
+'user strict'
+
 import React from 'react'
 import { Component } from 'react';
 import { Scene, Actions, Drawer } from 'react-native-router-flux'

@@ -1,4 +1,6 @@
 // Created by szatpig at 2019/7/1.
+'user strict'
+
 import React from 'react'
 import { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, StatusBar, TouchableOpacity, ImageBackground, Image, Alert} from 'react-native';
@@ -8,22 +10,25 @@ import { Actions } from 'react-native-router-flux';
 import common from './../../styles/common.style'
 import px2dp from './../../utils/adapter'
 
+import Iconf from 'react-native-vector-icons/SimpleLineIcons';
+
 interface Props{}
 interface State{}
 
 class Home extends Component<Props,State> {
      static defaultProps = {}
      componentDidMount(){}
-     componentDidUpdate(){}
+     componentDidUpdate(){
+          console.log(Actions);
+     }
      componentWillUnmount(){}
      _openDrawer = (e) => {
-          console.log(e)
           Actions.drawerOpen();
           StatusBar.setBarStyle('dark-content');
      }
      _onPressButton() {
          Alert.alert('You tapped the button!')
-       }
+     }
      render() {
           return (
               <ScrollView style = { styles.scroll }>
@@ -73,7 +78,7 @@ class Home extends Component<Props,State> {
                        <View style={ styles.voice }>
                             <View style={ [common.flex,styles.voiceTitle] }>
                                 <Text style={ styles.voiceTitleLeft }>我的助理</Text>
-                                <Text style={ styles.voiceTitleRight }>查看更多</Text>
+                                <Text style={ styles.voiceTitleRight }>查看更多<Iconf name="arrow-right" style={ [common.icon,{ fontSize:14,marginLeft:px2dp(164) }] } /></Text>
                             </View>
                             <View style={ [styles.voiceSelected] }>
                                 <View style={ styles.voiceSelectedLeft }>

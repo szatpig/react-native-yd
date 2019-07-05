@@ -1,4 +1,6 @@
 // Created by szatpig at 2019/7/2.
+'user strict'
+
 import { Dimensions, Platform } from 'react-native'
 // import DeviceInfo from 'react-native-device-info'
 export default device = {
