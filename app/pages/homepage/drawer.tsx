@@ -28,12 +28,9 @@ const SwitchComp = (props) => {
 }
 
 class Drawer extends Component<Props,State> {
-     constructor(props:Props){
-		super(props);
-		this.state = {
-		    switchOpen: false,
-		};
-     }
+     state = {
+         switchOpen: false,
+     };
      _drawerClose = () => {
          Actions.drawerClose();
          StatusBar.setBarStyle('light-content')
@@ -45,6 +42,7 @@ class Drawer extends Component<Props,State> {
      }
      render() {
           const { switchOpen } = this.state;
+          console.log(this.state);
           return (
               <TouchableOpacity style={ [styles.container,common.navContentHeight] }>
                   <View style={styles.wrapper}>

@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, StatusBar, TouchableOpacity, ImageBackground, Image, Alert} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, ImageBackground, Image, Alert} from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -13,9 +13,20 @@ import px2dp from './../../utils/adapter'
 import Iconf from 'react-native-vector-icons/SimpleLineIcons';
 
 interface Props{}
-interface State{}
+interface State{
+    translateStatus:boolean,
+    switchSoundCalled:boolean
+}
+
+const SwitchComp = (props) => {
+     return <Image style={ styles.switchImg }  source={ props.open ? require('./../../images/open.png') : require('./../../images/close.png') } />
+}
 
 class Home extends Component<Props,State> {
+     state = {
+          translateStatus:false,
+          switchSoundCalled:false,
+     }
      static defaultProps = {}
      componentDidMount(){}
      componentDidUpdate(){
@@ -26,10 +37,23 @@ class Home extends Component<Props,State> {
           Actions.drawerOpen();
           StatusBar.setBarStyle('dark-content');
      }
+     _handleSwitch = keyName => {
+         console.log(keyName);
+         this.setState({
+              [keyName]: !this.state[keyName]
+         })
+     }
+     _handleOpen = e =>{
+         this.setState({
+               switchSoundCalled : !this.state.switchSoundCalled
+         })
+     }
      _onPressButton() {
          Alert.alert('You tapped the button!')
      }
      render() {
+          console.log('这是真的吗' + this.state.translateStatus)
+          const { translateStatus,switchSoundCalled } = this.state
           return (
               <ScrollView style = { styles.scroll }>
                   <View style={ [styles.container,common.navStatusBarHeight] }>
@@ -40,18 +64,41 @@ class Home extends Component<Props,State> {
                               style={ styles.setting }
                               source={ require('./../../images/setting.png') } />
                        </TouchableOpacity>
+                       {
+                       translateStatus
+                       &&
+                       <View style={ styles.switchCalled }>
+                            <Text style={ styles.switchCalledTxt }>无声转接</Text>
+                            <TouchableOpacity style={ { width:px2dp(75),height:px2dp(42) } } onPress={ this._handleSwitch.bind(this,'switchSoundCalled') }>
+	                            <SwitchComp open={ switchSoundCalled } />
+                            </TouchableOpacity>
+                       </View>
+                       }
+
                        <View style={ styles.welcome }>
-                           <Text style={ styles.h1 }>Hi～欢迎使用意电助理</Text>
-                           <Text style={ styles.h4 }>赶快开启使用小意吧！</Text>
+                           {
+                               !translateStatus
+                               ?
+                               <View>
+                                    <Text style={ styles.h1 }>Hi～欢迎使用意电助理</Text>
+                                    <Text style={ styles.h4 }>赶快开启使用小意吧！</Text>
+                               </View>
+                               :
+                               <View>
+                                    <Text style={ styles.h1 }>无声转接工作中…</Text>
+                                    <Text style={ styles.h4 }>APP自动拦截陌生号码，陌生号码不再响铃</Text>
+                               </View>
+                           }
+
                        </View>
                        <View style={ styles.wrap }>
                            <TouchableOpacity
-                               style={ styles.button } >
-                               <Text style={ styles.buttonTxt }>立即开启</Text>
+                               style={ !translateStatus ? styles.button : styles.buttonActive } onPress={ this._handleSwitch.bind(this,'translateStatus') }>
+                               <Text style={ !translateStatus ? styles.buttonTxt : styles.buttonActiveText }>立即{ !translateStatus ? '开启' : '关闭' }</Text>
                            </TouchableOpacity>
                            <Image
                                   style={ styles.animate }
-                                  source={ require('./../../images/sleep.gif') } />
+                                  source={ !translateStatus ? require('./../../images/sleep.gif') : require('./../../images/work.gif') } />
                            <View style={ [styles.flex,common.flex] }>
                                 <View style= { [styles.flexCell,,common.flexCell] }>
                                     <Image source={ require('./../../images/call.png') } />
@@ -75,22 +122,26 @@ class Home extends Component<Props,State> {
                                 </View>
                            </View>
                        </View>
-                       <View style={ styles.voice }>
-                            <View style={ [common.flex,styles.voiceTitle] }>
-                                <Text style={ styles.voiceTitleLeft }>我的助理</Text>
-                                <Text style={ styles.voiceTitleRight }>查看更多<Iconf name="arrow-right" style={ [common.icon,{ fontSize:14,marginLeft:px2dp(164) }] } /></Text>
-                            </View>
-                            <View style={ [styles.voiceSelected] }>
-                                <View style={ styles.voiceSelectedLeft }>
-                                    <Image style={ styles.voiceHead }  source={ { uri:'https://test-assistant.ynt.ai/dev/group1/M00/00/33/rBQKyF0LOOWAaL0sAAAdSICMKZM853.png' } } />
-                                    <View style={ styles.voiceText }>
-                                        <Text style={ styles.voiceSelectedName }>温柔女声云云</Text>
-                                        <Text style={ styles.voiceSelectedIntro }>这里来几个说明文字啥的</Text>
-                                    </View>
-                                </View>
-                                <Image style={ [styles.voicePlay] } source={ require('./../../images/play.png') } />
-                            </View>
-                       </View>
+                       {
+                           translateStatus
+                           &&
+                           <View style={ styles.voice }>
+                               <View style={ [common.flex,styles.voiceTitle] }>
+                                   <Text style={ styles.voiceTitleLeft }>我的助理</Text>
+                                   <Text style={ styles.voiceTitleRight }>查看更多<Iconf name="arrow-right" style={ [common.icon,{ fontSize:14,marginLeft:px2dp(164) }] } /></Text>
+                               </View>
+                               <View style={ [styles.voiceSelected] }>
+                                   <View style={ styles.voiceSelectedLeft }>
+                                       <Image style={ styles.voiceHead }  source={ { uri:'https://test-assistant.ynt.ai/dev/group1/M00/00/33/rBQKyF0LOOWAaL0sAAAdSICMKZM853.png' } } />
+                                       <View style={ styles.voiceText }>
+                                           <Text style={ styles.voiceSelectedName }>温柔女声云云</Text>
+                                           <Text style={ styles.voiceSelectedIntro }>这里来几个说明文字啥的</Text>
+                                       </View>
+                                   </View>
+                                   <Image style={ [styles.voicePlay] } source={ require('./../../images/play.png') } />
+                               </View>
+                           </View>
+                       }
                   </View>
               </ScrollView>
           )
@@ -129,6 +180,22 @@ const styles = StyleSheet.create({
     },
     setting:{
     },
+    switchCalled:{
+       position:'absolute',
+       right:px2dp(32),
+       top:px2dp(80),
+       backgroundColor:'transparent',
+       width:px2dp(142),
+       height:px2dp(42),
+       flexDirection: 'row',
+       flexWrap:'nowrap',
+       justifyContent:'flex-end'
+    },
+    switchCalledTxt:{
+       color:'#fff',
+       fontSize:14,
+       marginRight:px2dp(16)
+    },
     welcome:{
         width:'100%',
         marginTop:px2dp(148),
@@ -157,12 +224,26 @@ const styles = StyleSheet.create({
        borderRadius: px2dp(80),
        backgroundColor:'#fff'
     },
+    buttonActive:{
+       width:px2dp(254),
+       height:px2dp(80),
+       borderRadius: px2dp(80),
+       backgroundColor:'rgba(255,255,255,0.1)',
+       borderWidth:px2dp(1),
+       borderColor:'#fff'
+    },
     buttonTxt:{
-       color:'#2E72F4FF',
+       color:'#2E72F4',
        fontSize:16,
        textAlign:'center',
        lineHeight:px2dp(80)
-   },
+    },
+    buttonActiveText:{
+        color:'#fff',
+        fontSize:16,
+        textAlign:'center',
+        lineHeight:px2dp(78)
+    },
     animate:{
       position:'absolute',
       right:0,
