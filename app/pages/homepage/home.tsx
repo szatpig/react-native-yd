@@ -18,8 +18,8 @@ interface State{
     switchSoundCalled:boolean
 }
 
-const SwitchComp = (props) => {
-     return <Image style={ styles.switchImg }  source={ props.open ? require('./../../images/open.png') : require('./../../images/close.png') } />
+const SwitchComp = (props:{ open:boolean }) => {
+     return <Image  source={ props.open ? require('./../../images/open.png') : require('./../../images/close.png') } />
 }
 
 class Home extends Component<Props,State> {
@@ -33,26 +33,24 @@ class Home extends Component<Props,State> {
           console.log(Actions);
      }
      componentWillUnmount(){}
-     _openDrawer = (e) => {
+     _openDrawer = () => {
           Actions.drawerOpen();
-          StatusBar.setBarStyle('dark-content');
      }
-     _handleSwitch = keyName => {
+     _handleSwitch = (keyName:string) => {
          console.log(keyName);
-         this.setState({
-              [keyName]: !this.state[keyName]
-         })
+         this.setState(prevState => ({
+			 [keyName]: !prevState[keyName]
+          }));
      }
-     _handleOpen = e =>{
-         this.setState({
-               switchSoundCalled : !this.state.switchSoundCalled
-         })
+     _handleOpen = () =>{
+         this.setState(prevState => ({
+			 switchSoundCalled: !prevState.switchSoundCalled
+		 }));
      }
      _onPressButton() {
          Alert.alert('You tapped the button!')
      }
      render() {
-          console.log('这是真的吗' + this.state.translateStatus)
           const { translateStatus,switchSoundCalled } = this.state
           return (
               <ScrollView style = { styles.scroll }>

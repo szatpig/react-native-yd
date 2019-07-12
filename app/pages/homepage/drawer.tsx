@@ -5,7 +5,7 @@ import React from 'react'
 import { Component } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, StatusBar, Image, TouchableOpacity } from 'react-native';
 
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 import px2dp from './../../utils/adapter'
 import common from './../../styles/common.style'
 
@@ -33,12 +33,11 @@ class Drawer extends Component<Props,State> {
      };
      _drawerClose = () => {
          Actions.drawerClose();
-         StatusBar.setBarStyle('light-content')
      }
      _handleSwitch = () => {
-         this.setState({
-            switchOpen:!this.state.switchOpen
-         })
+         this.setState(prevState => ({
+         	 switchOpen: !prevState.switchOpen
+         }));
      }
      render() {
           const { switchOpen } = this.state;

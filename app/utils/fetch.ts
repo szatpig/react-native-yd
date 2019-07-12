@@ -1,5 +1,6 @@
 // Created by szatpig at 2019/6/28.
-async function fetch() {
+async function fetch(url,options) {
+    let opt = options || {}
     try {
         // 注意这里的await语句，其所在的函数必须有async关键字声明
         let response = await fetch(
